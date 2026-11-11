@@ -663,6 +663,8 @@
     <string name="about_myzert_desc">Creator and author of YuriLauncher</string>
     <string name="about_MovTery_desc">Author and creator of ZalithLauncher, which this launcher is based on</string>
     <string name="about_PojavLauncher_desc">The development team of PojavLauncher, who developed and open-sourced PojavLauncher</string>
+    <string name="about_mobileglues_desc">Developer of MobileGlues, providing high performance OpenGL ES translation</string>
+    <string name="about_fcl_desc">FoldCraftLauncher team, providing open source launcher innovations</string>
     <string name="about_mcmod_desc">The launcher uses Mod and modpack Chinese translations from MC Wiki</string>
     <string name="about_VeraFirefly_desc">Provided technical support for rendering in the launcher</string>
     <string name="about_LingMuQiuZhu_desc">Provided technical support for the launcher</string>

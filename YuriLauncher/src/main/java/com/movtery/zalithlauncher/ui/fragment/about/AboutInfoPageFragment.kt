@@ -113,6 +113,22 @@ class AboutInfoPageFragment() : Fragment(R.layout.fragment_about_info_page) {
         )
         mAboutData.add(
             AboutItemBean(
+                resources.getDrawable(R.mipmap.ic_launcher_round, requireContext().theme),
+                "MobileGL-Dev (MobileGlues)",
+                getString(R.string.about_mobileglues_desc),
+                AboutItemButtonBean(requireActivity(), "GitHub", "https://github.com/MobileGL-Dev/MobileGlues-release")
+            )
+        )
+        mAboutData.add(
+            AboutItemBean(
+                resources.getDrawable(R.drawable.ic_pojav_full, requireContext().theme),
+                "FCL-Team (Fold Craft Launcher)",
+                getString(R.string.about_fcl_desc),
+                AboutItemButtonBean(requireActivity(), "GitHub", "https://github.com/FCL-Team/FoldCraftLauncher")
+            )
+        )
+        mAboutData.add(
+            AboutItemBean(
                 resources.getDrawable(R.drawable.image_about_mcmod, requireContext().theme),
                 "MC 百科",
                 getString(R.string.about_mcmod_desc),

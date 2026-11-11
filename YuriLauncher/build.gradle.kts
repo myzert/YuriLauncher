@@ -28,6 +28,7 @@ val getBuildType = {
 }
 
 val nameId = "com.movtery.zalithlauncher"
+val applicationIdString = "com.YuriLauncher"
 val generatedZalithDir = file("$buildDir/generated/source/zalith/java")
 val launcherAPPName = project.findProperty("launcher_app_name") as? String ?: error("The \"launcher_app_name\" property is not set in gradle.properties.")
 val launcherName = project.findProperty("launcher_name") as? String ?: error("The \"launcher_name\" property is not set in gradle.properties.")
@@ -69,7 +70,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = nameId
+        applicationId = applicationIdString
         minSdk = 26
         targetSdk = 34
         versionCode = launcherVersionCode
@@ -79,7 +80,7 @@ android {
     }
 
     buildTypes {
-        val storageProviderId = "$nameId.storage_provider"
+        val storageProviderId = "$applicationIdString.storage_provider"
 
         getByName("debug") {
             applicationIdSuffix = ".debug"
@@ -103,7 +104,12 @@ android {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
             resValue("string", "storageProviderAuthorities", storageProviderId)
-            signingConfig = signingConfigs.getByName("releaseBuild")
+            val releasePwd = System.getenv("MOVTERY_KEYSTORE_PASSWORD")
+            if (!releasePwd.isNullOrEmpty() && file("movtery-key.jks").exists()) {
+                signingConfig = signingConfigs.getByName("releaseBuild")
+            } else {
+                signingConfig = signingConfigs.getByName("customDebug")
+            }
         }
     }
 

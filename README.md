@@ -76,12 +76,25 @@ cd YuriLauncher
 
 ---
 
-## 👥 Contributors & Authors
+## 👥 Contributors & Credits
 
-- **Main Author & Maintainer:** [myzert](https://github.com/myzert)
-- **Based on:**
-  - [ZalithLauncher](https://github.com/ZalithLauncher/ZalithLauncher) by [MovTery](https://github.com/MovTery)
-  - [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher) by [PojavLauncherTeam](https://github.com/PojavLauncherTeam)
+YuriLauncher is actively developed and maintained thanks to incredible open-source projects and contributors:
+
+### 🌟 Core Contributors
+| Contributor | Role & Contribution | Profile / Repository |
+| :--- | :--- | :--- |
+| **[myzert](https://github.com/myzert)** | Lead Creator, Rebranding & Maintainer | [![GitHub](https://img.shields.io/badge/GitHub-myzert-7B1FA2?style=flat&logo=github)](https://github.com/myzert) |
+| **[MovTery](https://github.com/MovTery)** | Creator of ZalithLauncher, Original Launcher Architecture | [![GitHub](https://img.shields.io/badge/GitHub-MovTery-black?style=flat&logo=github)](https://github.com/MovTery) |
+| **[PojavLauncherTeam](https://github.com/PojavLauncherTeam)** | PojavLauncher Core, Minecraft Java on Android engine | [![GitHub](https://img.shields.io/badge/GitHub-PojavLauncher-orange?style=flat&logo=github)](https://github.com/PojavLauncherTeam/PojavLauncher) |
+| **[MobileGL-Dev](https://github.com/MobileGL-Dev)** | MobileGlues OpenGL ES translation layer | [![GitHub](https://img.shields.io/badge/GitHub-MobileGlues-purple?style=flat&logo=github)](https://github.com/MobileGL-Dev/MobileGlues-release) |
+| **[FCL-Team](https://github.com/FCL-Team)** | FoldCraftLauncher renderer plugins & extensions | [![GitHub](https://img.shields.io/badge/GitHub-FCL--Team-green?style=flat&logo=github)](https://github.com/FCL-Team) |
+| **[Vera-Firefly](https://space.bilibili.com/1412062866)** | UI/UX & Visual Contributions | [Bilibili Space](https://space.bilibili.com/1412062866) |
+| **[ShirosakiMio](https://space.bilibili.com/35801833)** | Launcher Components & Assets | [Bilibili Space](https://space.bilibili.com/35801833) |
+
+### 💖 Upstream Open Source Acknowledgements
+- **[HMCL](https://github.com/HMCL-dev/HMCL)** - Hello Minecraft! Launcher
+- **[Caciocavallo](https://github.com/PojavLauncherTeam/caciocavallo)** - AWT-bridge on Android
+- **[LWJGL](https://www.lwjgl.org/)** - Lightweight Java Game Library
 
 ---
 
