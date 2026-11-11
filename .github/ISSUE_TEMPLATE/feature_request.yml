@@ -1,0 +1,29 @@
+name: Feature Request
+description: 'Suggest an idea or new feature for YuriLauncher'
+labels: [Suggestion]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature Description
+      description: |
+        Please describe your feature idea in detail here.
+    validations:
+      required: true
+
+  - type: textarea
+    id: more-info
+    attributes:
+      label: Additional Information
+      description: |
+        If possible, provide reference images or examples to help understand the idea.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: check-issue
+    attributes:
+      label: Duplicate Check
+      options:
+        - label: I have searched the Issues and found no similar feature request
+          required: true
