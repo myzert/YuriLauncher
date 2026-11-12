@@ -1,13 +1,25 @@
-name: Android CI
+name: Build YuriLauncher APK
 
 on:
   push:
+    branches: [ "main" ]
   pull_request:
+    branches: [ "main" ]
   workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build Type'
+        required: true
+        default: 'Release'
+        type: choice
+        options:
+          - 'Release'
+          - 'Debug'
+          - 'Both'
 
 jobs:
   BuildRelease:
-    if: !startsWith(github.ref, 'refs/pull/') && github.ref_name == 'main'
+    if: github.ref_name == 'main' || github.event.inputs.build_type == 'Release' || github.event.inputs.build_type == 'Both'
     runs-on: ubuntu-22.04
     strategy:
       matrix:
@@ -54,15 +66,14 @@ jobs:
           chmod +x gradlew
           ./gradlew YuriLauncher:assembleRelease -Darch=${{ matrix.arch }}
 
-      - name: Upload Release ${{matrix.arch}}
-        continue-on-error: true
+      - name: Upload Release ${{ matrix.arch }}
         uses: actions/upload-artifact@v4
         with:
-          name: YuriLauncher(Release) ${{ matrix.arch }}
-          path: YuriLauncher/build/outputs/apk/release/*
+          name: YuriLauncher-Release-${{ matrix.arch }}
+          path: YuriLauncher/build/outputs/apk/release/*.apk
 
   BuildDebug:
-    if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/pull/') || github.ref_name != 'main'
+    if: github.event.inputs.build_type == 'Debug' || github.event.inputs.build_type == 'Both' || startsWith(github.ref, 'refs/pull/')
     runs-on: ubuntu-22.04
     strategy:
       matrix:
@@ -85,13 +96,13 @@ jobs:
           mkdir out
           ./gradlew jre_lwjgl3glfw:build --no-daemon
 
-      - name: Build Debug ${{matrix.arch}}
+      - name: Build Debug ${{ matrix.arch }}
         run: |
           chmod +x gradlew
           ./gradlew YuriLauncher:assembleDebug -Darch=${{ matrix.arch }}
 
-      - name: Upload Debug ${{matrix.arch}}
+      - name: Upload Debug ${{ matrix.arch }}
         uses: actions/upload-artifact@v4
         with:
-          name: YuriLauncher(Debug) ${{ matrix.arch }}
-          path: YuriLauncher/build/outputs/apk/debug/*
+          name: YuriLauncher-Debug-${{ matrix.arch }}
+          path: YuriLauncher/build/outputs/apk/debug/*.apk
