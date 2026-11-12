@@ -119,11 +119,11 @@ class VideoSettingsFragment : AbstractSettingsFragment(R.layout.settings_fragmen
 
         binding.rendererDownload.setOnClickListener {
             TipDialog.Builder(context)
-                .setTitle(R.string.setting_renderer_download_plugin)
+                .setTitle("Download Renderer Plugin")
                 .setMessage("Select renderer plugin source:\n\n• MobileGlues (OpenGL 4.0)\n• FCL Renderer Plugin")
                 .setConfirm("MobileGlues")
                 .setCancel("FCL Plugin")
-                .setConfirmClickListener {
+                .setConfirmClickListener { _ ->
                     ZHTools.openLink(context, UrlManager.URL_MOBILEGLUES_PLUGIN)
                 }
                 .setCancelClickListener {

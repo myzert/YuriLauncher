@@ -8,6 +8,7 @@ import com.movtery.zalithlauncher.R
 import com.movtery.zalithlauncher.feature.log.Logging
 import com.movtery.zalithlauncher.task.TaskExecutors
 import com.movtery.zalithlauncher.ui.dialog.TipDialog
+import com.movtery.zalithlauncher.utils.path.UrlManager
 import net.kdt.pojavlaunch.Architecture
 import net.kdt.pojavlaunch.Logger
 import net.kdt.pojavlaunch.plugins.FFmpegPlugin
