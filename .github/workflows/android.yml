@@ -1,84 +1,24 @@
-name: Build YuriLauncher APK
+name: Build YuriLauncher Debug APK & Release
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
   workflow_dispatch:
-    inputs:
-      build_type:
-        description: 'Build Type'
-        required: true
-        default: 'Release'
-        type: choice
-        options:
-          - 'Release'
-          - 'Debug'
-          - 'Both'
+
+permissions:
+  contents: write
 
 jobs:
-  BuildRelease:
-    if: github.ref_name == 'main' || github.event.inputs.build_type == 'Release' || github.event.inputs.build_type == 'Both'
+  BuildDebug:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        arch: [ "all", "arm", "arm64", "x86", "x86_64" ]
+        arch: [ "all", "arm64", "arm", "x86_64", "x86" ]
       fail-fast: false
 
     env:
       CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set build type
-        id: set-env
-        run: |
-          COMMIT_MSG="${{ github.event.head_commit.message }}"
-          BUILD_TYPE="DEBUG"
-
-          if [[ "$COMMIT_MSG" == *"pre-release"* ]]; then
-            BUILD_TYPE="PRE_RELEASE"
-          elif [[ "$COMMIT_MSG" == *"release"* ]]; then
-            BUILD_TYPE="RELEASE"
-          fi
-
-          echo "ZL_BUILD_TYPE=${BUILD_TYPE}" >> $GITHUB_ENV
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Build JRE JAR files
-        run: |
-          chmod +x gradlew
-          mkdir out
-          ./gradlew jre_lwjgl3glfw:build --no-daemon
-
-      - name: Build Release ${{ matrix.arch }}
-        env:
-          MOVTERY_KEYSTORE_PASSWORD: ${{ secrets.MOVTERY_KEYSTORE_PASSWORD }}
-        run: |
-          chmod +x gradlew
-          ./gradlew YuriLauncher:assembleRelease -Darch=${{ matrix.arch }}
-
-      - name: Upload Release ${{ matrix.arch }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: YuriLauncher-Release-${{ matrix.arch }}
-          path: YuriLauncher/build/outputs/apk/release/*.apk
-
-  BuildDebug:
-    if: github.event.inputs.build_type == 'Debug' || github.event.inputs.build_type == 'Both' || startsWith(github.ref, 'refs/pull/')
-    runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        arch: [ "all", "arm", "arm64", "x86", "x86_64" ]
-      fail-fast: false
+      ZL_BUILD_TYPE: "DEBUG"
 
     steps:
       - name: Checkout
@@ -101,8 +41,58 @@ jobs:
           chmod +x gradlew
           ./gradlew YuriLauncher:assembleDebug -Darch=${{ matrix.arch }}
 
+      - name: Prepare APK for Artifact & Release
+        run: |
+          mkdir -p apk_output
+          find YuriLauncher/build/outputs/apk/debug/ -name "*.apk" -exec cp {} apk_output/YuriLauncher-Debug-${{ matrix.arch }}.apk \;
+          ls -lh apk_output/
+
       - name: Upload Debug ${{ matrix.arch }}
         uses: actions/upload-artifact@v4
         with:
           name: YuriLauncher-Debug-${{ matrix.arch }}
-          path: YuriLauncher/build/outputs/apk/debug/*.apk
+          path: apk_output/*.apk
+
+  PublishRelease:
+    needs: BuildDebug
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all built APKs
+        uses: actions/download-artifact@v4
+        with:
+          path: all_apks/
+          merge-multiple: true
+
+      - name: List APKs
+        run: |
+          ls -lh all_apks/
+
+      - name: Publish to GitHub Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: "YuriLauncher (Latest Debug Build)"
+          body: |
+            ## 🎮 YuriLauncher Latest Build
+            
+            Unduh langsung file APK sesuai arsitektur perangkat Anda di bawah ini (tidak perlu ekstrak zip):
+            
+            - **`YuriLauncher-Debug-arm64.apk`**: Untuk HP Android modern 64-bit (Direkomendasikan untuk sebagian besar HP).
+            - **`YuriLauncher-Debug-arm.apk`**: Untuk HP Android 32-bit lama.
+            - **`YuriLauncher-Debug-all.apk`**: Universal APK (berisi seluruh runtime, ukuran lebih besar).
+            - **`YuriLauncher-Debug-x86_64.apk`**: Untuk Emulator PC 64-bit.
+            - **`YuriLauncher-Debug-x86.apk`**: Untuk Emulator PC 32-bit.
+            
+            ### ✨ Fitur Terbaru:
+            - **Package ID:** `com.YuriLauncher`
+            - **Theme:** Tema warna ungu (Purple Material 3)
+            - **Logo:** Logo baru YuriLauncher
+            - **Signed:** Debug keystore (Langsung install tanpa error signature)
+          draft: false
+          prerelease: false
+          files: all_apks/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
