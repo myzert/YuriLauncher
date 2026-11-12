@@ -201,8 +201,10 @@ public class FileRecyclerAdapter extends RecyclerView.Adapter<FileRecyclerAdapte
             }
 
             if (file != null && file.isFile() && ImageUtils.isImage(file)) {
+                int imgW = binding.image.getWidth() > 0 ? binding.image.getWidth() : 96;
+                int imgH = binding.image.getHeight() > 0 ? binding.image.getHeight() : 96;
                 Glide.with(context).load(file)
-                        .override(binding.image.getWidth(), binding.image.getHeight())
+                        .override(imgW, imgH)
                         .centerCrop()
                         .into(new DrawableImageViewTarget(binding.image));
             } else {

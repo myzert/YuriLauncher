@@ -20,7 +20,7 @@ class UrlManager {
         const val URL_MCMOD: String = "https://www.mcmod.cn/"
         const val URL_MINECRAFT: String = "https://www.minecraft.net/"
         const val URL_MINECRAFT_VERSION_REPOS: String = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
-        const val URL_SUPPORT: String = "https://afdian.com/a/MovTery"
+        const val URL_SUPPORT: String = "https://github.com/myzert/YuriLauncher"
         const val URL_HOME: String = "https://github.com/myzert/YuriLauncher"
         const val URL_FCL_RENDERER_PLUGIN: String = "https://github.com/ShirosakiMio/FCLRendererPlugin/releases/tag/Renderer"
         const val URL_MOBILEGLUES_PLUGIN: String = "https://github.com/MobileGL-Dev/MobileGlues-release"

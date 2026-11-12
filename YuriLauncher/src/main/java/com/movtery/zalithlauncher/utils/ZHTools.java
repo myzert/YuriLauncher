@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.ImageDecoder;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.AnimatedImageDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.opengl.EGL14;
@@ -93,16 +96,33 @@ public final class ZHTools {
 
     public synchronized static Drawable customMouse(Context context) {
         File mouseFile = getCustomMouse();
-        if (mouseFile == null) {
+        if (mouseFile == null || !mouseFile.exists()) {
             return ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_mouse_pointer, context.getTheme());
         }
 
-        // 鼠标：自定义鼠标图片
-        if (mouseFile.exists()) {
-            return Drawable.createFromPath(mouseFile.getAbsolutePath());
-        } else {
-            return ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_mouse_pointer, context.getTheme());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            try {
+                ImageDecoder.Source source = ImageDecoder.createSource(mouseFile);
+                Drawable drawable = ImageDecoder.decodeDrawable(source);
+                if (drawable instanceof AnimatedImageDrawable) {
+                    ((AnimatedImageDrawable) drawable).setRepeatCount(AnimatedImageDrawable.REPEAT_INFINITE);
+                }
+                return drawable;
+            } catch (Throwable th) {
+                Logging.e("ZHTools", "Failed to decode custom mouse with ImageDecoder: " + th.getMessage());
+            }
         }
+
+        try {
+            Drawable drawable = Drawable.createFromPath(mouseFile.getAbsolutePath());
+            if (drawable != null) {
+                return drawable;
+            }
+        } catch (Throwable th) {
+            Logging.e("ZHTools", "Failed to create drawable from path: " + th.getMessage());
+        }
+
+        return ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_mouse_pointer, context.getTheme());
     }
 
     public static File getCustomMouse() {

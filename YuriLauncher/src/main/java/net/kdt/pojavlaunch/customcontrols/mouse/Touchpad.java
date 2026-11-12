@@ -4,6 +4,7 @@ import static net.kdt.pojavlaunch.Tools.currentDisplayMetrics;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -44,11 +45,17 @@ public class Touchpad extends View implements GrabListener, AbstractTouchpad {
     private void _enable(){
         setVisibility(VISIBLE);
         placeMouseAt(currentDisplayMetrics.widthPixels / 2f, currentDisplayMetrics.heightPixels / 2f);
+        if (mMousePointerDrawable instanceof Animatable) {
+            ((Animatable) mMousePointerDrawable).start();
+        }
     }
 
     /** Disable the touchpad and hides the mouse */
     private void _disable(){
         setVisibility(GONE);
+        if (mMousePointerDrawable instanceof Animatable) {
+            ((Animatable) mMousePointerDrawable).stop();
+        }
     }
 
     /** @return The new state, enabled or disabled */
@@ -81,8 +88,44 @@ public class Touchpad extends View implements GrabListener, AbstractTouchpad {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        if (mMousePointerDrawable == null) return;
+        canvas.save();
         canvas.translate(mMouseX, mMouseY);
         mMousePointerDrawable.draw(canvas);
+        canvas.restore();
+    }
+
+    @Override
+    protected boolean verifyDrawable(@NonNull Drawable who) {
+        return who == mMousePointerDrawable || super.verifyDrawable(who);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (mMousePointerDrawable instanceof Animatable && getVisibility() == VISIBLE) {
+            ((Animatable) mMousePointerDrawable).start();
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mMousePointerDrawable instanceof Animatable) {
+            ((Animatable) mMousePointerDrawable).stop();
+        }
+    }
+
+    @Override
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        if (mMousePointerDrawable instanceof Animatable) {
+            if (visibility == VISIBLE && getVisibility() == VISIBLE) {
+                ((Animatable) mMousePointerDrawable).start();
+            } else {
+                ((Animatable) mMousePointerDrawable).stop();
+            }
+        }
     }
 
     private void init(){
@@ -103,14 +146,32 @@ public class Touchpad extends View implements GrabListener, AbstractTouchpad {
     }
 
     public void updateMouseScale() {
-        Dimension mousescale = ImageUtils.resizeWithRatio(mMousePointerDrawable.getIntrinsicWidth(), mMousePointerDrawable.getIntrinsicHeight(),
+        if (mMousePointerDrawable == null) return;
+        int intrinsicWidth = mMousePointerDrawable.getIntrinsicWidth();
+        int intrinsicHeight = mMousePointerDrawable.getIntrinsicHeight();
+        if (intrinsicWidth <= 0) intrinsicWidth = 48;
+        if (intrinsicHeight <= 0) intrinsicHeight = 48;
+        Dimension mousescale = ImageUtils.resizeWithRatio(intrinsicWidth, intrinsicHeight,
                 AllSettings.getMouseScale().getValue());
         mMousePointerDrawable.setBounds(0, 0, (int) (mousescale.width * 0.5), (int) (mousescale.height * 0.5));
     }
 
     public void updateMouseDrawable() {
+        if (mMousePointerDrawable instanceof Animatable) {
+            ((Animatable) mMousePointerDrawable).stop();
+        }
+        if (mMousePointerDrawable != null) {
+            mMousePointerDrawable.setCallback(null);
+        }
         mMousePointerDrawable = ZHTools.customMouse(getContext());
+        if (mMousePointerDrawable != null) {
+            mMousePointerDrawable.setCallback(this);
+            if (mMousePointerDrawable instanceof Animatable && getVisibility() == VISIBLE) {
+                ((Animatable) mMousePointerDrawable).start();
+            }
+        }
         updateMouseScale();
+        invalidate();
     }
 
     @Override

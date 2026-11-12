@@ -653,7 +653,7 @@
     <string name="about_sponsors_list">查看贊助者清單</string>
     <string name="about_sponsors_desc">以下是所有支持開發的贊助者們，萬分感謝！</string>
     <string name="about_sponsors_amount">時間與總金額</string>
-    <string name="about_button_support_development">贊助開發</string>
+    <string name="about_button_support_development">GitHub 專案</string>
     <string name="about_myzert_desc">YuriLauncher 開發者與創作者</string>
     <string name="about_MovTery_desc">ZalithLauncher 原作者，本啟動器基於其開發</string>
     <string name="about_PojavLauncher_desc">PojavLauncher 的開發團隊，開發並開源了 PojavLauncher</string>

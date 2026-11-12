@@ -691,7 +691,7 @@
     <string name="about_sponsors_list">查看赞助者列表</string>
     <string name="about_sponsors_desc">以下是所有支持开发的赞助者们，万分感谢！</string>
     <string name="about_sponsors_amount">时间与总金额</string>
-    <string name="about_button_support_development">赞助开发</string>
+    <string name="about_button_support_development">GitHub 项目</string>
     <string name="about_myzert_desc">YuriLauncher 开发者与创作者</string>
     <string name="about_MovTery_desc">ZalithLauncher 原作者，本启动器基于其开发</string>
     <string name="about_PojavLauncher_desc">PojavLauncher 的开发团队，开发并开源了 PojavLauncher</string>

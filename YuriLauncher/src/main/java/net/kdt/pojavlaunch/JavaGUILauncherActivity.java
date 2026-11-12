@@ -2,6 +2,7 @@ package net.kdt.pojavlaunch;
 
 import android.annotation.SuppressLint;
 import android.content.ClipboardManager;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -99,14 +100,24 @@ public class JavaGUILauncherActivity extends BaseActivity implements View.OnTouc
         binding.installmodWindowMoveright.setOnTouchListener(this);
 
         binding.mousePointer.setImageDrawable(ZHTools.customMouse(this));
+        if (binding.mousePointer.getDrawable() instanceof Animatable) {
+            ((Animatable) binding.mousePointer.getDrawable()).start();
+        }
 
         binding.mousePointer.post(() -> {
             ViewGroup.LayoutParams params = binding.mousePointer.getLayoutParams();
             Drawable drawable = binding.mousePointer.getDrawable();
-            Dimension mousescale = ImageUtils.resizeWithRatio(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(),
-                    AllSettings.getMouseScale().getValue());
-            params.width = (int) (mousescale.width * 0.5);
-            params.height = (int) (mousescale.height * 0.5);
+            if (drawable != null && params != null) {
+                int intrinsicWidth = drawable.getIntrinsicWidth();
+                int intrinsicHeight = drawable.getIntrinsicHeight();
+                if (intrinsicWidth <= 0) intrinsicWidth = 48;
+                if (intrinsicHeight <= 0) intrinsicHeight = 48;
+                Dimension mousescale = ImageUtils.resizeWithRatio(intrinsicWidth, intrinsicHeight,
+                        AllSettings.getMouseScale().getValue());
+                params.width = (int) (mousescale.width * 0.5);
+                params.height = (int) (mousescale.height * 0.5);
+                binding.mousePointer.setLayoutParams(params);
+            }
         });
 
         binding.mainTouchpad.setOnTouchListener(new View.OnTouchListener() {

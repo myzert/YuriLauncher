@@ -29,15 +29,7 @@ class AboutSponsorPageFragment : Fragment(R.layout.fragment_about_sponsor_page) 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        check(object : CheckSponsor.CheckListener {
-            override fun onFailure() {
-                setSponsorVisible(false)
-            }
-
-            override fun onSuccessful(data: SponsorMeta?) {
-                setSponsorVisible(true)
-            }
-        })
+        setSponsorVisible(false)
     }
 
     private fun setSponsorVisible(visible: Boolean) {

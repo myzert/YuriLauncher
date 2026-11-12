@@ -56,24 +56,6 @@ class AboutInfoPageFragment() : Fragment(R.layout.fragment_about_info_page) {
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = aboutAdapter
             }
-            sponsor.setOnClickListener { _ ->
-                parentPager2?.currentItem = 1
-            }
-
-            if (ZHTools.isChinese(requireActivity())) {
-                qqGroupButton.visibility = View.VISIBLE
-                qqGroupButton.setOnClickListener {
-                    TipDialog.Builder(context)
-                        .setTitle("QQ")
-                        .setMessage("欢迎加入 ${InfoDistributor.APP_NAME} 官方 QQ 交流群（群号：${InfoCenter.QQ_GROUP}）！由于群人数有限，加入群聊前需要赞助 5元 或以上金额，请点击右侧“赞助开发”按钮访问爱发电。")
-                        .setSelectable(true)
-                        .setConfirm(R.string.generic_confirm)
-                        .setShowCancel(false)
-                        .showDialog()
-                }
-            } else {
-                qqGroupButton.visibility = View.GONE
-            }
 
             discordButton.setOnClickListener { ZHTools.openLink(requireActivity(), "https://discord.gg/yDDkTHp4cJ") }
         }
@@ -181,8 +163,8 @@ class AboutInfoPageFragment() : Fragment(R.layout.fragment_about_info_page) {
                 getString(R.string.about_bangbang93_desc),
                 AboutItemButtonBean(
                     requireActivity(),
-                    getString(R.string.about_button_support_development),
-                    "https://afdian.com/a/bangbang93"
+                    "BMCLAPI",
+                    "https://bmclapidoc.bangbang93.com/"
                 )
             )
         )

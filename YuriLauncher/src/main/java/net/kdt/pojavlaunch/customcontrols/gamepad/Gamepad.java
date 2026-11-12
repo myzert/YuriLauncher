@@ -23,6 +23,7 @@ import static org.lwjgl.glfw.CallbackBridge.sendKeyPress;
 import static org.lwjgl.glfw.CallbackBridge.sendMouseButton;
 
 import android.content.Context;
+import android.graphics.drawable.Animatable;
 import android.view.Choreographer;
 import android.view.InputDevice;
 import android.view.KeyEvent;
@@ -107,7 +108,12 @@ public class Gamepad implements GrabListener, GamepadHandler {
         Context ctx = contextView.getContext();
         mPointerImageView = new ImageView(ctx);
         mPointerImageView.setImageDrawable(ZHTools.customMouse(ctx));
-        mPointerImageView.getDrawable().setFilterBitmap(false);
+        if (mPointerImageView.getDrawable() != null) {
+            mPointerImageView.getDrawable().setFilterBitmap(false);
+            if (mPointerImageView.getDrawable() instanceof Animatable) {
+                ((Animatable) mPointerImageView.getDrawable()).start();
+            }
+        }
 
         int size = (int) ((22 * MCOptions.INSTANCE.getMcScale()) / AllStaticSettings.scaleFactor);
         mPointerImageView.setLayoutParams(new FrameLayout.LayoutParams(size, size));

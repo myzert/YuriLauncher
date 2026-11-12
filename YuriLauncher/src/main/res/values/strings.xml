@@ -660,7 +660,7 @@
     <string name="about_sponsors_list">View Sponsors List</string>
     <string name="about_sponsors_desc">The following are all the sponsors who support the development, thank you very much!</string>
     <string name="about_sponsors_amount">Time and Total Amount</string>
-    <string name="about_button_support_development">Sponsor Development</string>
+    <string name="about_button_support_development">GitHub Project</string>
     <string name="about_myzert_desc">Creator and author of YuriLauncher</string>
     <string name="about_MovTery_desc">Author and creator of ZalithLauncher, which this launcher is based on</string>
     <string name="about_PojavLauncher_desc">The development team of PojavLauncher, who developed and open-sourced PojavLauncher</string>

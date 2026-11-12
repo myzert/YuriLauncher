@@ -20,7 +20,11 @@ class ImageUtils {
         @JvmStatic
         fun isImage(file: File?): Boolean {
             file?.apply {
-                if (isDirectory) return false
+                if (isDirectory || !exists()) return false
+                val ext = extension.lowercase()
+                if (ext in listOf("png", "jpg", "jpeg", "webp", "gif", "bmp")) {
+                    return true
+                }
                 runCatching {
                     val options = BitmapFactory.Options()
                     options.inJustDecodeBounds = true
@@ -40,13 +44,17 @@ class ImageUtils {
          */
         @JvmStatic
         fun resizeWithRatio(imageWidth: Int, imageHeight: Int, maxSize: Int): Dimension {
+            if (imageWidth <= 0 || imageHeight <= 0 || maxSize <= 0) {
+                val safe = if (maxSize > 0) maxSize else 48
+                return Dimension(safe, safe)
+            }
             val widthRatio = maxSize.toDouble() / imageWidth
             val heightRatio = maxSize.toDouble() / imageHeight
 
             //选择较小的缩放比例，确保长宽按比例缩小且不超过maxSize限制
             val ratio = min(widthRatio, heightRatio)
-            val newWidth = (imageWidth * ratio).toInt()
-            val newHeight = (imageHeight * ratio).toInt()
+            val newWidth = (imageWidth * ratio).toInt().coerceAtLeast(1)
+            val newHeight = (imageHeight * ratio).toInt().coerceAtLeast(1)
 
             return Dimension(newWidth, newHeight)
         }

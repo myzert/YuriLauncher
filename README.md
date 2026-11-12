@@ -69,6 +69,8 @@ YuriLauncher is engineered for maximum frame rate, low memory overhead, and rock
 ## ✨ Features
 
 - 💜 **Material 3 Purple Palette** — Elegant, user-customizable dark and light theme options.
+- 🖱️ **Animated GIF Cursor Support** — Import and use animated `.gif` (or static) cursors in-game and across virtual touchpads with high-frame rate hardware playback.
+- 🎨 **Refined Clean UI/UX** — Modernized Material 3 interface, streamlined settings, and no intrusive third-party sponsor popups.
 - ⚡ **Seamless Version Management** — Supports Minecraft Java from alpha versions up to the latest releases, snapshots, and April Fools builds.
 - 🧩 **Comprehensive Mod Loader Support** — One-click installation and automatic management for:
   - **Fabric** & **Quilt**

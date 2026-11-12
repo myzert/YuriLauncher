@@ -1,6 +1,7 @@
 package com.movtery.zalithlauncher.ui.fragment
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.Animatable
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -127,15 +128,21 @@ class CustomMouseFragment : FragmentWithAnim(R.layout.fragment_custom_mouse) {
 
     private fun refreshIcon() {
         binding.mouseIcon.apply {
+            val targetW = width.takeIf { it > 0 } ?: 120
+            val targetH = height.takeIf { it > 0 } ?: 120
             ZHTools.getCustomMouse()?.let { file ->
                 Glide.with(requireActivity())
                     .load(file)
-                    .override(width, height)
+                    .override(targetW, targetH)
                     .fitCenter()
                     .into(DrawableImageViewTarget(this))
                 return@apply
             }
-            setImageDrawable(ZHTools.customMouse(context))
+            val defDrawable = ZHTools.customMouse(context)
+            setImageDrawable(defDrawable)
+            if (defDrawable is Animatable) {
+                defDrawable.start()
+            }
         }
     }
 
