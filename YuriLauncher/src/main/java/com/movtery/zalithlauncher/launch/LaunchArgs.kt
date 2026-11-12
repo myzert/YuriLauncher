@@ -79,6 +79,16 @@ class LaunchArgs(
         argsList.add("-Dorg.lwjgl.system.SharedLibraryExtractPath=${lwjglDir.absolutePath}")
         argsList.add("-Dio.netty.native.workdir=${nettyDir.absolutePath}")
 
+        // YuriLauncher High-Performance JVM & GC Optimizations
+        argsList.add("-XX:+UnlockExperimentalVMOptions")
+        argsList.add("-XX:+UseG1GC")
+        argsList.add("-XX:G1NewSizePercent=20")
+        argsList.add("-XX:G1ReservePercent=15")
+        argsList.add("-XX:MaxGCPauseMillis=50")
+        argsList.add("-XX:G1HeapRegionSize=32M")
+        argsList.add("-XX:+ParallelRefProcEnabled")
+        argsList.add("-Dsun.rmi.dgc.server.gcInterval=2147483646")
+
         return argsList
     }
 

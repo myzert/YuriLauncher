@@ -254,11 +254,25 @@ public final class JREUtils {
 
         envMap.put("POJAV_RENDERER", rendererId);
 
+        // YuriLauncher Driver & Renderer Performance Optimizations
+        envMap.put("MESA_GLSL_CACHE_DIR", PathManager.DIR_CACHE.getAbsolutePath());
+        envMap.put("MESA_GLSL_CACHE_MAX_SIZE", "500MB");
+        envMap.put("mesa_glthread", "true");
+        envMap.put("MESA_VK_WSI_DEBUG", "swapsync");
+        envMap.put("TU_DEBUG", "noconform");
+
+        if (currentRenderer.getRendererLibrary() != null && currentRenderer.getRendererLibrary().contains("mobileglues")) {
+            envMap.put("LIBGL_EGL", "libmobileglues.so");
+            envMap.put("POJAVEXEC_EGL", "libmobileglues.so");
+            envMap.put("LIBGL_ES", "3");
+            envMap.put("POJAV_RENDERER", "opengles3");
+            envMap.put("POJAV_ZINK_PREFER_SYSTEM_DRIVER", "1");
+        }
+
         if (RendererPluginManager.getSelectedRendererPlugin() != null) return;
 
         if (!rendererId.startsWith("opengles")) {
             envMap.put("MESA_LOADER_DRIVER_OVERRIDE", "zink");
-            envMap.put("MESA_GLSL_CACHE_DIR", PathManager.DIR_CACHE.getAbsolutePath());
             envMap.put("force_glsl_extensions_warn", "true");
             envMap.put("allow_higher_compat_version", "true");
             envMap.put("allow_glsl_extension_directive_midshader", "true");
